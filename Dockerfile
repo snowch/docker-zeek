@@ -69,16 +69,18 @@ ENV PATH=/usr/local/zeek/bin:$PATH
 RUN echo "===> Installing zkg and zeek-kafka plugin v${ZEEK_KAFKA_PLUGIN_VERSION}..." \
     # Install zkg using pip
     && pip install --break-system-packages zkg==$ZKG_VERSION \
-    # Initialize zkg configuration
+    # Initialize zkg configuration non-interactively
     && zkg autoconfig --force \
     # Non-interactively configure LIBRDKAFKA_ROOT for the zeek-kafka plugin
-    # zkg stores its config in /root/.zkg/config by default in a root context
+    # zkg stores its config in /root/.zkg/config by default for user-specific settings,
+    # but autoconfig might have also set up /usr/local/zeek/etc/zkg/config.
+    # Ensuring the user-specific one has the setting is a safeguard.
     && mkdir -p /root/.zkg \
     && echo "" >> /root/.zkg/config \
     && echo "[zeek/seisollc/zeek-kafka]" >> /root/.zkg/config \
     && echo "LIBRDKAFKA_ROOT = /usr/local" >> /root/.zkg/config \
-    # Install the zeek-kafka plugin
-    && zkg install seisollc/zeek-kafka --version $ZEEK_KAFKA_PLUGIN_VERSION \
+    # Install the zeek-kafka plugin, now with --force to bypass "Proceed?" prompt
+    && zkg install --force seisollc/zeek-kafka --version $ZEEK_KAFKA_PLUGIN_VERSION \
     # Verify plugin installation (optional, but good for checking)
     && /usr/local/zeek/bin/zeek -N Seiso::Kafka \
     # Clean up caches
