@@ -70,7 +70,7 @@ RUN echo "===> Installing zkg and zeek-kafka plugin v${ZEEK_KAFKA_PLUGIN_VERSION
     # Install zkg using pip
     && pip install --break-system-packages zkg==$ZKG_VERSION \
     # Initialize zkg configuration
-    && zkg autoconfig \
+    && zkg autoconfig --force \
     # Non-interactively configure LIBRDKAFKA_ROOT for the zeek-kafka plugin
     # zkg stores its config in /root/.zkg/config by default in a root context
     && mkdir -p /root/.zkg \
