@@ -74,7 +74,7 @@ RUN echo "===> Installing zkg and zeek-kafka plugin v${ZEEK_KAFKA_PLUGIN_VERSION
     # Non-interactively configure LIBRDKAFKA_ROOT for the zeek-kafka plugin
     # zkg stores its config in /root/.zkg/config by default in a root context
     && mkdir -p /root/.zkg \
-    && echo "" >> /root/.zkg/config \ # Ensure a newline before appending section
+    && echo "" >> /root/.zkg/config \
     && echo "[zeek/seisollc/zeek-kafka]" >> /root/.zkg/config \
     && echo "LIBRDKAFKA_ROOT = /usr/local" >> /root/.zkg/config \
     # Install the zeek-kafka plugin
